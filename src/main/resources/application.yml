@@ -1,0 +1,32 @@
+
+spring:
+  jpa:
+    show-sql: true
+    properties.hibernate.format_sql: true
+    hibernate.ddl-auto: create-drop
+  datasource.url: jdbc:h2:mem:testdb
+  datasource.driverClassName: org.h2.Driver
+  datasource.username: sa
+  jpa.database-platform: org.hibernate.dialect.H2Dialect
+  h2.console.path: /h2-console
+#  spring.h2.console.settings.trace=false
+#  spring.h2.console.settings.web-allow-others=false
+#  devtools:
+#    livereload:
+#      enabled: true
+#  freemarker:
+#    cache: false
+
+graphql:
+  servlet:
+    mapping: /graphql
+    enabled: true
+    corsEnabled: true
+    exception-handlers-enabled: true
+    contextSetting: PER_REQUEST_WITH_INSTRUMENTATION
+
+graphiql:
+  mapping: /graphiql
+  endpoint:
+    graphql: /graphql
+    subscriptions: /subscriptions

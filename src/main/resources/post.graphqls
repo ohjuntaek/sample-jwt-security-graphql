@@ -1,0 +1,8 @@
+type Post {
+    title: String!,
+    content: String!,
+    writerId: String!
+}
+extend type Query {
+    getPosts: [Post!]
+}

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입 페이지</title>
+</head>
+<body>
+
+<label>
+    아이디 : <input id="id" type="text" />
+</label> <br/>
+<label>
+    비번 : <input id="password" type="password" />
+</label> <br/>
+
+<label>
+    이름 : <input id="name" type="text">
+</label> <br/>
+<label>
+    역할(ADMIN, USER) : <input id="role" type="text" >
+</label> <br/>
+
+<label>
+    <input type="button" value="가입하기" onclick="button_click()"/>
+</label>
+
+
+
+<script>
+    const id = () => document.querySelector(`#id`).value
+    const password = () => document.querySelector(`#password`).value
+    const name = () => document.querySelector(`#name`).value
+    const button = () => document.querySelector(`#role`).value
+
+    const button_click = () => {
+        console.log(`회원가입 고`)
+        fetch('/graphql', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                operationName: `CreateMember`,
+                query: `mutation CreateMember($input: MemberRequest!) {
+                    createMember(memberRequest: $input) {
+                        memberName
+                        memberLoginId
+                        role
+                    }
+                }`,
+                variables: `{
+                    "input": {
+                        "loginId": "${id()}",
+                        "password": "${password()}",
+                        "name": "${name()}",
+                        "role": "${button()}"
+                    }
+                }`
+            })
+        })
+        .then(res => res.json())
+        .then(res => console.log(res.data))
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+schema {
+    query: Query,
+    mutation: Mutation
+}
+
+type Member {
+    memberName: String!,
+    memberLoginId: String!
+    role: String!
+}
+
+type Query {
+    getMemberInfo(loginId: String!): Member!
+}
+
+type Mutation {
+    createMember(memberRequest: MemberRequest!): Member!
+}
+
+input MemberRequest {
+    loginId: String!,
+    password: String!,
+    role: String!,
+    name: String!
+}
