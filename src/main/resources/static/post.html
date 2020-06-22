@@ -3,8 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <title>Post</title>
+
+    <div id="content">
+        게시판이다
+    </div>
 </head>
 <body>
+
+
+<script>
+    const drawPosts = (posts) => {
+        const parentDom = document.querySelector(`#content`)
+        posts.forEach(e => {
+            const child = document.createElement("div")
+            child.textContent = e.content
+            console.log(child)
+            parentDom.appendChild(child)
+        })
+    }
+
+    const fetchPosts = () => {
+        console.log("포스트 가져오기 고")
+        fetch(`/post`)
+        .then(res => res.json())
+        .then(res => {
+            console.log(res.toString())
+            drawPosts(res)
+        })
+    }
+
+    fetchPosts();
+</script>
 
 </body>
 </html>
