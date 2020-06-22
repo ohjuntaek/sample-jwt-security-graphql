@@ -25,6 +25,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.h2database:h2'
@@ -40,6 +41,9 @@ dependencies {
     testImplementation 'com.graphql-java-kickstart:graphql-spring-boot-starter-test:7.0.1'
 
     implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.6.1")
+
+
+    implementation group: 'com.auth0', name: 'java-jwt', version: '3.1.0'
 
 }
 
