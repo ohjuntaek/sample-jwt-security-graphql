@@ -45,13 +45,10 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
             .addFilter(new JwtAuthorizationFilter(authenticationManager(), memberRepository))
             .authorizeRequests()
             // configure access rules
-            .antMatchers("/console/**",
-                    "/h2-console/**",
-                    "/graphql/**",
-                    "/graphiql/**").hasRole("ADMIN")
-            .mvcMatchers("/post").authenticated()
+            .mvcMatchers("/graphql/**").permitAll()
             .antMatchers(HttpMethod.POST, "/login").permitAll()
-            .antMatchers("/").permitAll();
+            .antMatchers("/", "/*.html", "/console/**", "/h2-console/**").permitAll()
+            .anyRequest().authenticated();
     }
 
     @Override

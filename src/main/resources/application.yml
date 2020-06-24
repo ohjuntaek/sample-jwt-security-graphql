@@ -24,12 +24,9 @@ graphql:
     corsEnabled: true
     exception-handlers-enabled: true
     contextSetting: PER_REQUEST_WITH_INSTRUMENTATION
-
-graphiql:
-  mapping: /graphiql
-  endpoint:
-    graphql: /graphql
-    subscriptions: /subscriptions
+  spqr:
+    gui:
+      enabled: true
 
 #server:
 #  port: 8443
@@ -39,3 +36,4 @@ graphiql:
 #    key-store-password: password
 #    key-store-type: PKCS12
 #    key-alias: bootsecurity
+

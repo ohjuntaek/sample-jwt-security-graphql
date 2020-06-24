@@ -11,5 +11,37 @@
 <a href="/join.html"> 회원가입 </a> <br/>
 <a href="/post.html"> 게시판 보기 </a>
 
+
+
+<div>
+    <label>
+        아이디 : <input id="username" type="text"/> <br/>
+        비번 : <input id="password" type="password">
+        <input type="button" value="로그인하기" onclick="clickLogin()"/>
+    </label>
+</div>
+
+<script>
+    const id = () => document.querySelector(`#username`).value
+    const password = () => document.querySelector(`#password`).value
+
+    let a = null
+
+    const clickLogin = () => {
+        fetch('/login', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: `{
+                "username": "${id()}",
+                "password": "${password()}"
+            }`
+        })
+            .then(res => {
+                localStorage.setItem('Authorization', res.headers.get('Authorization'))
+                console.log("Authorization save ok")
+            })
+    }
+
+</script>
 </body>
 </html>

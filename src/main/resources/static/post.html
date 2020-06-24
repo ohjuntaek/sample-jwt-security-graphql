@@ -24,11 +24,23 @@
 
     const fetchPosts = () => {
         console.log("포스트 가져오기 고")
-        fetch(`/post`)
+        fetch(`/graphql`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                query: `{
+                    posts {
+                        content
+                        title
+                        writerId
+                    }
+                }`
+            })
+        })
         .then(res => res.json())
         .then(res => {
             console.log(res.toString())
-            drawPosts(res)
+            drawPosts(res.data.posts)
         })
     }
 

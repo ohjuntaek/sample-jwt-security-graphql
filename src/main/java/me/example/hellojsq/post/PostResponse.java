@@ -1,5 +1,6 @@
 package me.example.hellojsq.post;
 
+import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.*;
 
 import java.util.Collections;

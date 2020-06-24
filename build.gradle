@@ -35,15 +35,16 @@ dependencies {
     }
     testImplementation 'org.springframework.security:spring-security-test'
 
-    implementation 'com.graphql-java-kickstart:graphql-spring-boot-starter:7.0.1'
-    compile 'com.graphql-java-kickstart:graphql-java-tools:6.0.2'
-    runtimeOnly 'com.graphql-java-kickstart:graphiql-spring-boot-starter:7.0.1'
-    testImplementation 'com.graphql-java-kickstart:graphql-spring-boot-starter-test:7.0.1'
+    implementation 'com.graphql-java:graphql-spring-boot-starter:5.0.2'
+    implementation 'com.graphql-java:graphql-java-tools:5.2.4'
+    implementation 'io.leangen.graphql:graphql-spqr-spring-boot-starter:0.0.4'
+
 
     implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.6.1")
 
 
     implementation group: 'com.auth0', name: 'java-jwt', version: '3.1.0'
+
 
 }
 
