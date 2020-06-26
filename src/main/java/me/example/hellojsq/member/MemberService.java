@@ -4,7 +4,18 @@ import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -12,10 +23,11 @@ import org.springframework.stereotype.Service;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final SecurityUserDetailService userDetailsService;
+    private final AuthenticationProvider authenticationProvider;
 
     @GraphQLQuery
     public MemberResponse getMemberInfo(String loginId) {
-        Member member = memberRepository.findByLoginId(loginId);
+        Member member = memberRepository.findByLoginId(loginId).orElseThrow(RuntimeException::new);
         return MemberResponse.from(member);
     }
 
@@ -24,4 +36,27 @@ public class MemberService {
         Member member = userDetailsService.createMember(memberRequest);
         return MemberResponse.from(member);
     }
+
+    @GraphQLMutation
+    @PreAuthorize("isAnonymous()")
+    public Member login(String email, String password) {
+        UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(email, password);
+        try {
+            SecurityContextHolder.getContext().setAuthentication(authenticationProvider.authenticate(credentials));
+            return getCurrentUser();
+        } catch (AuthenticationException ex) {
+            throw new BadCredentialsException(email);
+        }
+    }
+
+    @Transactional
+    public Member getCurrentUser() {
+        return Optional
+                .ofNullable(SecurityContextHolder.getContext())
+                .map(SecurityContext::getAuthentication)
+                .map(Authentication::getName)
+                .flatMap(memberRepository::findByLoginId)
+                .orElse(null);
+    }
+
 }
