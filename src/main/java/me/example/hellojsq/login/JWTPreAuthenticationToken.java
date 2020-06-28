@@ -7,6 +7,8 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 
 @Getter
 public class JWTPreAuthenticationToken extends PreAuthenticatedAuthenticationToken {
+    private static final long serialVersionUID = -5304730621727936850L;
+
 
     @Builder
     public JWTPreAuthenticationToken(JWTUserDetails principal, WebAuthenticationDetails details) {

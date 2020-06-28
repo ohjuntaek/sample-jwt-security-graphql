@@ -27,29 +27,24 @@ public class JWTFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        Optional<JWTUserDetails> jwtUserDetails = getToken(request)
-                .map(userService::loadUserByToken);
-        Optional<JWTPreAuthenticationToken> jwtPreAuthenticationToken = jwtUserDetails
+        Optional<String> token = getToken(request);
+        token
+                .map(userService::loadUserByToken)
                 .map(userDetails -> JWTPreAuthenticationToken
                         .builder()
                         .principal(userDetails)
                         .details(new WebAuthenticationDetailsSource().buildDetails(request))
-                        .build());
-        System.out.println("ㅅㅂ");
-        jwtPreAuthenticationToken
+                        .build())
                 .ifPresent(authentication -> SecurityContextHolder.getContext().setAuthentication(authentication));
         filterChain.doFilter(request, response);
 
     }
 
     private Optional<String> getToken(HttpServletRequest request) {
-        Optional<String> header = Optional
-                .ofNullable(request.getHeader(AUTHORIZATION_HEADER));
-        Optional<String> s = header
-                .filter(not(String::isEmpty));
-        Optional<Matcher> matcher1 = s
-                .map((e) -> BEARER_PATTERN.matcher(e));
-        return matcher1
+        return Optional
+                .ofNullable(request.getHeader(AUTHORIZATION_HEADER))
+                .filter(not(String::isEmpty))
+                .map(BEARER_PATTERN::matcher)
                 .filter(Matcher::find)
                 .map(matcher -> matcher.group(1));
     }

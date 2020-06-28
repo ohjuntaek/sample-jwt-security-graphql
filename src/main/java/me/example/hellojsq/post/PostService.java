@@ -16,7 +16,7 @@ public class PostService {
     private final PostRepository postRepository;
 
     @GraphQLQuery
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public List<PostResponse> getPosts() {
         return postRepository.findAll().stream()
                 .map(PostResponse::from)

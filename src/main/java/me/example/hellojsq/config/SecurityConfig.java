@@ -19,25 +19,26 @@ public class SecurityConfig {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-//    @Bean
-//    public AuthenticationProvider authenticationProvider(SecurityUserDetailService userService, PasswordEncoder passwordEncoder) {
-//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-//        provider.setUserDetailsService(userService);
-//        provider.setPasswordEncoder(passwordEncoder);
-//        return provider;
-//    }
-
-
     @Bean
-    public Algorithm jwtAlgorithm() {
-        return Algorithm.HMAC256(JwtProperties.SECRET.getBytes());
+    public AuthenticationProvider authenticationProvider(SecurityUserDetailService userService, PasswordEncoder passwordEncoder) {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userService);
+        provider.setPasswordEncoder(passwordEncoder);
+        return provider;
     }
 
+
     @Bean
-    public JWTVerifier verifier(Algorithm algorithm) {
+    public Algorithm jwtAlgorithm(SecurityProperties properties) {
+        return Algorithm.HMAC256(properties.getTokenSecret().getBytes());
+    }
+
+
+    @Bean
+    public JWTVerifier verifier(SecurityProperties properties, Algorithm algorithm) {
         return JWT
                 .require(algorithm)
-                .withIssuer("my-graphql-api")
+                .withIssuer(properties.getTokenIssuer())
                 .build();
     }
 }

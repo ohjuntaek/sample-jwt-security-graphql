@@ -55,11 +55,12 @@ public class SecurityUserDetailService implements UserDetailsService {
 
     @Transactional
     public JWTUserDetails loadUserByToken(String token) {
-        return getDecodedToken(token)
+        JWTUserDetails jwtUserDetails = getDecodedToken(token)
                 .map(DecodedJWT::getSubject)
                 .flatMap(memberRepository::findByLoginId)
                 .map(user -> getUserDetails(user, token))
                 .orElseThrow(RuntimeException::new);
+        return jwtUserDetails;
     }
 
 

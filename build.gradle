@@ -39,6 +39,9 @@ dependencies {
     implementation 'com.graphql-java:graphql-java-tools:5.2.4'
     implementation 'io.leangen.graphql:graphql-spqr-spring-boot-starter:0.0.4'
 
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
+
 
     implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.6.1")
 
